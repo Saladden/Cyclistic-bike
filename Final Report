@@ -29,3 +29,20 @@ Unified subscription type (subscriber & member = member, casual & customer = cas
 5. Tools Used
 In the analysis of this data, first R Programming Console was used to do basic analysis and to compile the 4 large files in one, while some graphics was possible to be done using R Programming, I used also Public Tableau to plot more graphic scenarios including external data sources as well.
 
+6. Data Analysis
+Data analysis was done using both R Programming and Tableau. 
+Link to Tableau Charts:
+https://public.tableau.com/app/profile/salaheddin.etarzi/viz/GoogleDataAnalyticsProfessionalCertificate-CaseStudy1/MostFrequentTripsCasualMember2
+
+
+7. Presentation - Data Sharing
+Presentation was done using power points, i did 2 presentation, one showing the results I got from R Programming and the other showing more details on the analysis done using Tableau
+
+Link to Presentation using R-Programming
+
+Link to Presentation using Tableau
+
+
+
+
+
