@@ -1,31 +1,89 @@
-Google Data Analytics Certificate - Capstone - Case Study 1 - Cyclistic Bike
+R Programming Code Used in the Analysis of this Case Study task 
 
-1. Introduction
-This is a case study to complete the Google Data Analytics Certificate program. 
-Cyclistic Bike is a bike sharing company, the company is aiming to increase its annual subsciptions as those are believed to be more profitable from financial sources, the ambition Design a marketing strategy aiming to convert casual riders into annual members. In order to maximize the benefit of this marketing strategy, we will need to explore 3 main topics:
-How do members differ in behavior from casual riders
-Why would casual riders buy an annual subscription 
-How can Cyclistic Bike as a company use digital media to influence casual riders.
+#Install Needed Packages
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("lubridate")
+library(lubridate)
+install.packages("ggplot2")
+library(ggplot2)
 
-2. Task
-In this presentation, we will focus more on the first topic analyzing the different behaviors between member and casual riders. 
+#displays the working directory
+getwd() 
 
-3. Data Info
-Information on the Data Used
-This case study sheds the light on the different behaviors between members and casual users by analyzing data that have the following characteristics:
-Data records of bike trips in the past year have been used, the data is split in 4 files, 1 for each quarter.
-The data used has been made available by Motivate International Inc. under this license.
-Data are stored in a shared folder where only members of the working team are granted access.
+#sets working directory 
+setwd("C:/Users/use_your_own_director/Documents/CSV Files") 
+
+#Uploading files into R Programming Console 
+q2_2019 <- read_csv("Divvy_Trips_2019_Q2.csv")
+q3_2019 <- read_csv("Divvy_Trips_2019_Q3.csv")
+q4_2019 <- read_csv("Divvy_Trips_2019_Q4.csv")
+q1_2020 <- read_csv("Divvy_Trips_2020_Q1.csv")
+
+#Get familiar with your data
+colnames(q2_2019)
+colnames(q3_2019)
+colnames(q4_2019)
+colnames(q1_2020)
+
+#Rename Columns to have consistent data, that will be required to compile the files into one
+q4_2019 <- rename(q4_2019
++                    ,ride_id = trip_id
++                    ,rideable_type = bikeid 
++                    ,started_at = start_time  
++                    ,ended_at = end_time  
++                    ,start_station_name = from_station_name 
++                    ,start_station_id = from_station_id 
++                    ,end_station_name = to_station_name 
++                    ,end_station_id = to_station_id 
++                    ,member_casual = usertype)
+q3_2019 <- rename(q3_2019
++                    ,ride_id = trip_id
++                    ,rideable_type = bikeid 
++                    ,started_at = start_time  
++                    ,ended_at = end_time  
++                    ,start_station_name = from_station_name 
++                    ,start_station_id = from_station_id 
++                    ,end_station_name = to_station_name 
++                    ,end_station_id = to_station_id 
++                    ,member_casual = usertype)
+q2_2019 <- rename(q2_2019
++                    ,ride_id = "01 - Rental Details Rental ID"
++                    ,rideable_type = "01 - Rental Details Bike ID" 
++                    ,started_at = "01 - Rental Details Local Start Time"  
++                    ,ended_at = "01 - Rental Details Local End Time"  
++                    ,start_station_name = "03 - Rental Start Station Name" 
++                    ,start_station_id = "03 - Rental Start Station ID"
++                    ,end_station_name = "02 - Rental End Station Name" 
++                    ,end_station_id = "02 - Rental End Station ID"
++                    ,member_casual = "User Type")
+
+#Compile all 4 files in one 
+all_trips <- bind_rows(q2_2019, q3_2019, q4_2019, q1_2020)
+
+#Statistical Summary of Dataset
+summary(all_trips)
+table(all_trips$member_casual) #shows number of trips per member or casual but here it shows also other types of subscriptions like customer and subscriber so we need to change those to be consistent
+
+#Change all member and casual rider_type
+all_trips <-  all_trips %>% 
++   mutate(member_casual = recode(member_casual
++                                 ,"Subscriber" = "member"
++                                 ,"Customer" = "casual"))
+
+#Create new columns to specify the date & month and day of the week also the duration of each trip
+all_trips$date <- as.Date(all_trips$started_at) #The default format is yyyy-mm-dd
+all_trips$month <- format(as.Date(all_trips$date), "%m")
+all_trips$day <- format(as.Date(all_trips$date), "%d")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+all_trips$ride_length <- difftime(all_trips$ended_at,all_trips$started_at)
 
 
-4. Data Manipulation
-A total of 3,879,822 bike trips have been analyzed.  4 files aggregated into 1 file and few data manipulation have been applied to ensure data consistency:
-R Programming has been used as it is the most efficient tool for this size of data and the required manipulation
-Column names have been unified between the 4 files.
-Added few columns showing the trip duration and day of week, Month and year
-Removed lines with negative trip duration (bike maintenance trips to HQ). 
-Unified subscription type (subscriber & member = member, casual & customer = casual) 
 
-5. Tools Used
-In the analysis of this data, first R Programming Console was used to do basic analysis and to compile the 4 large files in one, while some graphics was possible to be done using R Programming, I used also Public Tableau to plot more graphic scenarios including external data sources as well.
+
+
+
+
+
 
